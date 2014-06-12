@@ -1,0 +1,12 @@
+{
+	"SITE":{
+		"TITLE":"Social - CIA",
+		"NAV":{
+			"HOME":"Home",
+			"ADMIN": "Admin Dashboard"
+		},
+		"LOGIN":"Login",
+		"SIGNUP":"Join",
+		"COPYRIGHT":"2014 Creative Design"
+	}
+}
