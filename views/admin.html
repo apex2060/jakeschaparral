@@ -1,9 +1,26 @@
-<div id="mainContent" class="container" ng-controller="AdminCtrl">
-	<div class="cards">
-		<div class="card" ng-show="!data.roles.length">
+<div class="container" ng-controller="AdminCtrl">
+	<div class="row">
+		<div class="col-md-4" ng-show="!data.roles.length">
 			<h2 ng-click="tools.roles.setup()">Setup Roles</h2>
 		</div>
-		<div class="card">
+
+		<div class="col-md-4">
+			<div class="panel panel-default" ng-controller="SlideCtrl">
+				<div class="panel-heading">Main Slides</div>
+				<ul class="list-group slidemanager">
+					<li class="list-group-item" ng-repeat="slide in slides.results">
+						<img ng-src="{{slide.picture.src}}" ng-click="tools.edit(slide)" class="thumbnail" title="Edit This Slide">
+						<a class="btn btn-danger btn-xs delete" ng-click="tools.delete(slide)" title="Remove This Slide">
+							<i class="fa fa-trash-o"></i>
+						</a>
+					</li>
+					<li ng-click="tools.add()" class="list-group-item hand">Add Slide</li>
+				</ul>
+			</div>
+		</div>
+
+
+		<div class="col-md-4">
 			<div class="parent" ng-repeat="role in data.roles | orderBy:'order'">
 				<h2>{{role.name}}</h2>
 				<ul class="list child"><!-- child -->
@@ -16,7 +33,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="card" ng-show="data.unassigned">
+		<div class="col-md-4" ng-show="data.unassigned">
 			<h2>Unassigned</h2>
 			<ul class="list">
 				<li ng-repeat="user in data.unassigned">
@@ -27,7 +44,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card">
+		<div class="col-md-4">
 			<h2>Tools</h2>
 			<ul class="list">
 				<li>
@@ -47,4 +64,5 @@
 	</div>
 	<div ng-include="'partials/admin/userModal.html'"></div>
 	<div ng-include="'partials/admin/roleModal.html'"></div>
+	<div ng-include="'partials/admin/slideModal.html'"></div>
 </div>

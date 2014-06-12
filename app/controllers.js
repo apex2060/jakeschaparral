@@ -1,4 +1,4 @@
-var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $routeParams, $location, $http, config, userService, geoService){
+var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $routeParams, $location, $http, config, userService, dataService){
 	$rootScope.action = $routeParams.action;
 	$rootScope.view = $routeParams.view;
 	$rootScope.id = $routeParams.id;
@@ -111,6 +111,81 @@ var MainCtrl = app.controller('MainCtrl', function($rootScope, $scope, $routePar
 
 
 
+var SlideCtrl = app.controller('SlideCtrl', function($rootScope, $scope, $http, $q, config, dataService, fileService, userService){
+	var timestamp = new Date().getTime();
+	var slideResource = new dataService.resource(
+		'Slides',
+		'site/slides',
+		true,
+		true,
+		{timestamp: timestamp}
+	);
+	slideResource.item.list().then(function(data){
+		$scope.slides = data;
+	})
+	$rootScope.$on(slideResource.listenId, function(event, data){
+		$scope.slides = data;
+	})
+
+	var tools = {
+		user: userService,
+		add:function(){
+			$rootScope.temp.slide = {};
+			$('#adminSlideModal').modal('show');
+		},
+		edit:function(slide){
+			$rootScope.temp.slide = slide;
+			$('#adminSlideModal').modal('show');
+		},
+		delete:function(slide){
+			if(confirm('Are you sure you want to delete: '+slide.name)){
+				slideResource.item.remove(slide).then(function(results){
+					alert('Slide Removed')
+					console.log('remove slide results',results)
+				})
+			}
+		},
+		save: function(){
+			var slide = $rootScope.temp.slide;
+			slideResource.item.save(slide).then(function(results){
+				console.log('slide save results',results)
+				$rootScope.temp.slide = {};
+				$('#adminSlideModal').modal('hide');
+			})
+		},
+		setPicture: function(details,src){
+			if(!$rootScope.temp.slide)
+				$rootScope.temp.slide = {};
+			$rootScope.$apply(function(){
+				$rootScope.temp.slide.picture = {
+					temp: true,
+					status: 'uploading',
+					class: 'grayscale',
+					name: 'Image Uploading...',
+					src: src
+				};
+			});
+
+			fileService.upload(details,src,function(data){
+				$rootScope.$apply(function(){
+					$rootScope.temp.slide.picture = {
+						name: data.name(),
+						src: data.url()
+					}
+				})
+			});
+		}
+	}
+	$scope.tools 	= tools;
+	it.SlideCtrl 	= $scope;
+});
+
+
+
+
+
+
+
 
 
 var MissionCtrl = app.controller('MissionCtrl', function($rootScope, $scope, $http, $q, config, settings, dataService, fileService, userService){
@@ -215,6 +290,65 @@ var MissionCtrl = app.controller('MissionCtrl', function($rootScope, $scope, $ht
 });
 
 
+
+
+
+
+
+
+
+
+
+var MapCtrl = app.controller('MapCtrl', function($rootScope, $scope){
+	var tools = {
+		init:function(elemId, doBounce, doInfowindow) {
+			var myLatlng = new google.maps.LatLng(37.046711,-112.533212);
+			var mapOptions = {
+				zoom: 16,
+				center: myLatlng
+			}
+			var map = new google.maps.Map(document.getElementById(elemId), mapOptions);
+
+			var contentString = ''+
+			'<div id="content">'+
+				'<div id="siteNotice">'+
+				'</div>'+
+				'<h1 id="firstHeading" class="firstHeading">Jake\'s Chaparral</h1>'+
+				'<div id="bodyContent">'+
+					'<p><a href="'+$rootScope.map+'" target="_new">86 S 200 W,<br> Kanab, Utah 84741</a><br>(435) 644-5464</p>'+
+				'</div>'+
+			'</div>';
+
+			var infowindow = new google.maps.InfoWindow({
+				content: contentString
+			});
+
+			var marker = new google.maps.Marker({
+				animation: google.maps.Animation.DROP,
+				position: myLatlng,
+				map: map,
+				title: 'Jake\'s Chaparral!'
+			});
+			if(doBounce)
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+			google.maps.event.addListener(marker, 'click', function(){
+				if (marker.getAnimation() != null) {
+					marker.setAnimation(null);
+				} else {
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			});
+			// google.maps.event.addListener(marker, 'click', function() {
+			// 	infowindow.open(map,marker);
+			// });
+			if(doInfowindow)
+				infowindow.open(map,marker);
+			marker.setMap(map);
+		}
+	}
+	$scope.tools = tools;
+	it.MapCtrl=$scope;
+});
 
 
 

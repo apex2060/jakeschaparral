@@ -1,7 +1,7 @@
-<div id="carousel" class="carousel slide" data-ride="carousel">
+<div id="carousel" class="carousel slide" data-ride="carousel" ng-controller="SlideCtrl">
 	<!-- Menu -->
 	<ol class="carousel-indicators">
-		<li ng-repeat="slide in data.slides" 
+		<li ng-repeat="slide in slides.results" 
 			data-target="#carousel" 
 			data-slide-to="{{$index}}" 
 			ng-class="{active: $first}"></li>
@@ -9,8 +9,8 @@
 
 	<!-- Items -->
 	<div class="carousel-inner">
-		<div class="item" ng-repeat="slide in data.slides" ng-class="{active: $first}">
-			<img ng-src="{{slide.picture.src}}" alt="{{slide.name}}" />
+		<div class="item" ng-repeat="slide in slides.results" ng-class="{active: $first}">
+			<img class="carousel-img" ng-src="{{slide.picture.src}}" alt="{{slide.name}}" />
 		</div>
 	</div> 
 	<a href="#carousel" class="left carousel-control" data-slide="prev">

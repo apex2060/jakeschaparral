@@ -96,15 +96,15 @@ header nav ul li {
 	margin: 0px;
 }
 header nav ul li a {
-	color: #000;
-	background-color: #722B16;
-	border: 3px solid #170500;
+	color: #722B16;
+	/* background-color: #722B16; */
+	/* border: 3px solid #170500; */
 	font-weight: bold;
 	height: 40px;
-	width: 160px;
+	/* width: 160px; */
 	display: inline-block;
 	text-align: center;
-	margin: 5px 0px 0px 5px;
+	margin: 5px 0px 0px 50px;
 	line-height: 36px;
 	font-size: 20px;
 	/* border-radius: 5px; */
@@ -208,6 +208,7 @@ article {
 }
 
 
+/*Overrides*/
 .container {
 	padding-top: 50px;
 }
@@ -218,6 +219,20 @@ article {
 }
 .well h1{
 	border-bottom: 2px solid #346A91;
+}
+.carousel-img{
+	margin: 50px auto;
+	max-height: 400px;
+}
+.thumbnail{
+	max-width: 100%;
+}
+.hand{
+	cursor: pointer;
+}
+#carousel{
+	background: #000;
+	height: 500px;
 }
 
 
@@ -236,6 +251,10 @@ img.grayscale {
 	filter: gray; /* IE6-9 */
 	-webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
+#full-canvas {
+	height: 600px;
+	width: 100%;
+}
 map{
 	display: block;
 }
@@ -245,6 +264,15 @@ map{
 	width: 100%;
 }
 
+.slidemanager{
+	position: relative;
+}
+.slidemanager .delete{
+	position: absolute;
+	bottom: 30px; 
+	right: 15px;
+	border: 3px solid #FFF;
+}
 
 
 /*Jakes Chaparral Specific*/
